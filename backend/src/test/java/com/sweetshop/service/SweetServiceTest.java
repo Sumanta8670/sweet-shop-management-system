@@ -147,12 +147,14 @@ class SweetServiceTest {
     void testDeleteSweet_Success() {
         // Arrange
         when(sweetRepository.findById(1L)).thenReturn(Optional.of(sweet));
+        doNothing().when(sweetRepository).delete(sweet);
 
         // Act
         sweetService.deleteSweet(1L);
 
         // Assert
-        verify(sweetRepository, times(1)).deleteById(1L);
+        verify(sweetRepository, times(1)).findById(1L);
+        verify(sweetRepository, times(1)).delete(sweet);
     }
 
     @Test
@@ -164,6 +166,9 @@ class SweetServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> {
             sweetService.deleteSweet(1L);
         });
+
+        verify(sweetRepository, times(1)).findById(1L);
+        verify(sweetRepository, never()).delete(any(Sweet.class));
     }
 
     @Test
