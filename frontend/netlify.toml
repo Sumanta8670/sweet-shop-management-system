@@ -1,0 +1,22 @@
+[build]
+  command = "npm run build"
+  functions = "dist/api"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[context.production.environment]
+  VITE_API_URL = "https://your-api-url.onrender.com/api"
