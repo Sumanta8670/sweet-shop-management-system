@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: sweet-shop-api
+    runtime: java
+    buildCommand: "cd backend && mvn clean install -q"
+    startCommand: "cd backend && mvn spring-boot:run"
+    envVars:
+      - key: DATABASE_URL
+        scope: all
+      - key: JWT_SECRET
+        scope: all
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Dspring.profiles.active=prod"
+    disk:
+      name: postgres-data
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 10
+
+databases:
+  - name: sweet_shop_db
+    databaseName: sweet_shop_db
+    user: postgres
+    ipAllowList: []
+
+  - name: postgres
+    plan: free
