@@ -146,29 +146,29 @@ class SweetServiceTest {
     @Test
     void testDeleteSweet_Success() {
         // Arrange
-        when(sweetRepository.findById(1L)).thenReturn(Optional.of(sweet));
-        doNothing().when(sweetRepository).delete(sweet);
+        when(sweetRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(sweetRepository).deleteById(1L);
 
         // Act
         sweetService.deleteSweet(1L);
 
         // Assert
-        verify(sweetRepository, times(1)).findById(1L);
-        verify(sweetRepository, times(1)).delete(sweet);
+        verify(sweetRepository, times(1)).existsById(1L);
+        verify(sweetRepository, times(1)).deleteById(1L);
     }
 
     @Test
     void testDeleteSweet_NotFound() {
         // Arrange
-        when(sweetRepository.findById(1L)).thenReturn(Optional.empty());
+        when(sweetRepository.existsById(1L)).thenReturn(false);
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> {
             sweetService.deleteSweet(1L);
         });
 
-        verify(sweetRepository, times(1)).findById(1L);
-        verify(sweetRepository, never()).delete(any(Sweet.class));
+        verify(sweetRepository, times(1)).existsById(1L);
+        verify(sweetRepository, never()).deleteById(any(Long.class));
     }
 
     @Test
