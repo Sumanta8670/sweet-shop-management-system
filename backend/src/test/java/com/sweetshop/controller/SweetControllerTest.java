@@ -141,7 +141,8 @@ class SweetControllerTest {
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is5xxServerError()); // Expects 500 because verifyAdminRole throws IllegalArgumentException
+                .andExpect(status().isBadRequest()) // Changed from is5xxServerError()
+                .andExpect(jsonPath("$.error", equalTo("Only admins can perform this action")));
     }
 
     @Test
@@ -156,7 +157,7 @@ class SweetControllerTest {
         mockMvc.perform(post("/sweets")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden()); // Changed from isUnauthorized() - Spring Security returns 403
     }
 
     @Test
@@ -210,7 +211,8 @@ class SweetControllerTest {
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is5xxServerError()); // IllegalArgumentException from Sweet.purchase()
+                .andExpect(status().isBadRequest()) // Changed from is5xxServerError()
+                .andExpect(jsonPath("$.error", equalTo("Insufficient quantity available")));
     }
 
     @Test
@@ -235,7 +237,8 @@ class SweetControllerTest {
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isBadRequest()) // Changed from is5xxServerError()
+                .andExpect(jsonPath("$.error", equalTo("Only admins can perform this action")));
     }
 
     @Test
