@@ -1,22 +1,41 @@
-#IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-.DS_Store
-# Environment variables
+### Environment Variables ###
 .env
 .env.local
-# Logs
-logs/
-*.log
-#Dependencies
-node_modules/
+.env.*.local
+
+### Maven ###
 target/
-# Build outputs
-dist/
-build/
-# Database
-*.db
-*.sqlite
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+.idea_modules/
+out/
+
+### VS Code ###
+.vscode/
+
+### Eclipse ###
+.classpath
+.project
+.settings/
+bin/
+
+### System Files ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
+logs/
+
+### Temporary Files ###
+*.tmp
+*.bak
+*.swp
+*~.nib
