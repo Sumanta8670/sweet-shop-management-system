@@ -1,26 +1,41 @@
 services:
+  # Backend API Service
   - type: web
     name: sweet-shop-api
     runtime: java
-    buildCommand: "cd backend && mvn clean install -q"
-    startCommand: "cd backend && mvn spring-boot:run"
+    buildCommand: "cd backend && mvn clean package -DskipTests"
+    startCommand: "cd backend && java -jar target/sweet-shop-api-1.0.0.jar"
+    env: java
+    region: oregon
+    plan: free
     envVars:
-      - key: DATABASE_URL
-        scope: all
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: sweet-shop-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: sweet-shop-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: sweet-shop-db
+          property: password
       - key: JWT_SECRET
-        scope: all
-      - key: JAVA_TOOL_OPTIONS
-        value: "-Dspring.profiles.active=prod"
-    disk:
-      name: postgres-data
-      mountPath: /var/lib/postgresql/data
-      sizeGB: 10
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: "86400000"
+      - key: SPRING_PROFILES_ACTIVE
+        value: "prod"
+      - key: SERVER_PORT
+        value: "8080"
+      - key: ALLOWED_ORIGINS
+        value: "https://your-frontend-url.netlify.app"
+    healthCheckPath: /api/sweets
 
 databases:
-  - name: sweet_shop_db
+  # PostgreSQL Database
+  - name: sweet-shop-db
     databaseName: sweet_shop_db
     user: postgres
-    ipAllowList: []
-
-  - name: postgres
     plan: free
