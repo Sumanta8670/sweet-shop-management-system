@@ -4,6 +4,7 @@ import com.sweetshop.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,10 +42,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/sweets/search").permitAll()
-                        .requestMatchers("GET", "/api/sweets").permitAll()
-                        .requestMatchers("GET", "/api/sweets/**").permitAll()
+                        // Public endpoints - no authentication required
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/sweets/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/sweets").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/sweets/**").permitAll()
+                        // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
