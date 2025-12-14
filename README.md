@@ -406,33 +406,32 @@ npm test
 
 ### AI Tools Used
 
-- **Claude 3.5 Sonnet (Anthropic)**: Primary AI assistant for code generation and architecture
-- **GitHub Copilot**: IDE-based code suggestions and completions
+- **Claude 3.5 Sonnet (Anthropic)**: Primary AI assistant for code generation, Architecture scaffolding guide, Deployment Guide, Documentation Guide.
 
 ### How I Used AI
 
 #### 1. Project Architecture & Planning
 
-- Used Claude to brainstorm the overall application architecture
-- Generated boilerplate code for Spring Boot project structure
-- Created DTO and entity class definitions
+- Took guidance from Claude to refine and validate the overall application architecture
+- Used AI assistance for reference while setting up the initial Spring Boot project structure
+- Leveraged AI suggestions to review and improve DTO and entity class definitions
 
 #### 2. Backend Development
 
-- Generated JWT security configuration and JwtUtil class
-- Created exception handling framework and GlobalExceptionHandler
-- Implemented UserService, SweetService, and repositories
-- Generated controller endpoints with proper validation
+- Took AI guidance to design JWT security configuration and used limited code generation support for complex parts of the JwtUtil implementation
+- Used AI suggestions to structure the exception handling approach and refine the GlobalExceptionHandler
+- Leveraged AI assistance selectively while implementing UserService, SweetService, and repository layers, especially for complex logic
+- Used AI-generated references to shape controller endpoints and validation patterns, followed by manual customization
 - Wrote comprehensive unit tests for services using Mockito and JUnit 5
 
 #### 3. Frontend Development
 
-- Generated React component structure using modern hooks
-- Created Zustand store configurations for state management
-- Implemented API client with Axios interceptors
-- Generated form components with validation
-- Created responsive Tailwind CSS styling
-- Built routing structure with React Router v6
+- Took AI guidance to design the overall React component structure and applied modern hooks with manual refinements
+- Used AI suggestions as reference while configuring the Zustand store, with selective code generation for complex state logic
+- Leveraged AI assistance for designing the Axios API client and generated interceptor logic for authentication and error handling
+- Used AI-generated patterns to build form components and validation, followed by manual adjustments based on requirements
+- Took design guidance from AI for responsive Tailwind CSS utility usage and customized styles manually
+- Used AI support to outline the routing structure with React Router v6 and implemented the final configuration myself
 
 #### 4. Testing & Quality Assurance
 
@@ -564,9 +563,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 
-- GitHub: [@your-username](https://github.com/your-username)
-- Email: your.email@example.com
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/your-profile)
+- GitHub: [@Sumanta8670](https://github.com/your-username)
+- Email: janasumanta59@gmail.com
+- LinkedIn: [My LinkedIn](https://www.linkedin.com/in/sumanta-jana-99630722b/)
 
 ## 🙏 Acknowledgments
 
