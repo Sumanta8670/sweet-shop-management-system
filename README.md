@@ -487,7 +487,7 @@ npm test
 ![AdminDashboardOverview](screenshots/AdminDashboardOverview.png)
 
 ### Admin Panel
-![AdminDashboardRestock](screenshots/AdminDashboardRestock.png)
+![AdminDashboardRestock](screenshots/AdminDashBoardRestock.png)
 
 ### Search & Filter
 ![Search](screenshots/Search.png)
@@ -495,7 +495,7 @@ npm test
 ### Customer Page1
 ![CustomerPage1](screenshots/Customerpage1.png)
 
-### Customer Page1
+### Customer Page2
 ![CustomerPage2](screenshots/Customerpage2.png)
 
 ## 🔄 Continuous Integration
