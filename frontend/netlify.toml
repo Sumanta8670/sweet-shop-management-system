@@ -6,11 +6,11 @@
 
 # Production Environment Variables
 [context.production.environment]
-  VITE_API_URL = "https://sweet-shop-api.onrender.com/api"
+  VITE_API_URL = "https://sweet-shop-api-glak.onrender.com/api"
 
 # Development/Preview Environment Variables
 [context.deploy-preview.environment]
-  VITE_API_URL = "https://sweet-shop-api.onrender.com/api"
+  VITE_API_URL = "https://sweet-shop-api-glak.onrender.com/api"
 
 # SPA Redirect Rule - Must be last
 [[redirects]]
