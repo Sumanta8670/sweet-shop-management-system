@@ -475,20 +475,37 @@ npm test
 ## 📸 Screenshots
 
 ### Login Page
-
 ![Login Page](screenshots/login.png)
 
-### Home Page - Sweet Catalog
+### Registration Page
+![Registration Page](screenshots/RegisterPage.png)
 
-![Home Page](screenshots/home.png)
+### Login Page
+![Login Page](screenshots/LoginPage.png)
+
+### Home Page - Sweet Catalog
+![Home Page1](screenshots/HomePage1.png)
+
+### Home Page - Sweet Catalog Downpart
+![Home Page2](screenshots/HomePage2.png)
 
 ### Admin Panel
+![AdminDashboardManage](screenshots/AdminDashboardManage.png)
 
-![Admin Panel](screenshots/admin.png)
+### Admin Panel
+![AdminDashboardOverview](screenshots/AdminDashboardOverview.png)
+
+### Admin Panel
+![AdminDashboardRestock](screenshots/AdminDashboardRestock.png)
 
 ### Search & Filter
-
 ![Search](screenshots/search.png)
+
+### Customer Page1
+![CustomerPage1](screenshots/CustomerPage1.png)
+
+### Customer Page1
+![CustomerPage2](screenshots/CustomerPage2.png)
 
 ## 🔄 Continuous Integration
 
