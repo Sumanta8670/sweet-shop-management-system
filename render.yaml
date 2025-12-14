@@ -2,40 +2,29 @@ services:
   # Backend API Service
   - type: web
     name: sweet-shop-api
-    runtime: java
-    buildCommand: "cd backend && mvn clean package -DskipTests"
-    startCommand: "cd backend && java -jar target/sweet-shop-api-1.0.0.jar"
-    env: java
-    region: oregon
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    region: singapore
     plan: free
     envVars:
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: sweet-shop-db
-          property: connectionString
+        value: jdbc:postgresql://dpg-d4utt0vpm1nc73bd7hn0-a:5432/sweet_shop_db_uqxq
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: sweet-shop-db
-          property: user
+        value: sweet_shop_db_uqxq_user
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: sweet-shop-db
-          property: password
+        value: ZrLS0Kr6wRIOANlf3mUUvXCtXjZuQmaw
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRATION
         value: "86400000"
       - key: SPRING_PROFILES_ACTIVE
         value: "prod"
-      - key: SERVER_PORT
-        value: "8080"
       - key: ALLOWED_ORIGINS
-        value: "https://your-frontend-url.netlify.app"
+        value: "*"
     healthCheckPath: /api/sweets
 
 databases:
-  # PostgreSQL Database
   - name: sweet-shop-db
-    databaseName: sweet_shop_db
-    user: postgres
+    databaseName: sweet_shop_db_uqxq
     plan: free
