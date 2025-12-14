@@ -1,95 +1,139 @@
-# Deployment Guide - Sweet Shop Management System
+# Deployment Guide – Sweet Shop Management System
 
 ## Production Deployment
 
-This guide covers deploying the Sweet Shop Management System to production using Render (backend) and Netlify (frontend).
+This guide describes how to deploy the Sweet Shop Management System to production using **Render** for the backend and **Netlify** for the frontend.
+
+---
 
 ## Prerequisites
 
-- GitHub account with the repository pushed
-- Render account (render.com)
-- Netlify account (netlify.com)
-- PostgreSQL database (Render provides)
+* GitHub account with the repository pushed
+* Render account (render.com)
+* Netlify account (netlify.com)
+* PostgreSQL database (provided by Render)
+
+---
 
 ## Backend Deployment on Render
 
-### Step 1: Create PostgreSQL Database
+### Step 1: Create a PostgreSQL Database
 
-1. Go to [Render Dashboard](https://render.com)
-2. Click "New +" → "PostgreSQL"
-3. Fill in the following:
-    - Name: `sweet-shop-db`
-    - Database: `sweet_shop_db`
-    - User: `postgres`
-    - Region: Select closest to your users
-    - Free tier is available
-4. Click "Create Database"
-5. Wait for database to initialize
-6. Note down the Internal Database URL
+1. Open the **Render Dashboard**
+2. Click **New + → PostgreSQL**
+3. Configure the database:
 
-### Step 2: Deploy Backend Service
+   * **Name**: `sweet-shop-db`
+   * **Database**: `sweet_shop_db`
+   * **User**: `postgres`
+   * **Region**: Closest to your users
+   * **Plan**: Free tier
+4. Click **Create Database**
+5. Wait for initialization to complete
+6. Copy and save the **Internal Database URL**
 
-1. In Render dashboard, click "New +" → "Web Service"
+---
+
+### Step 2: Deploy the Backend Service
+
+1. In the Render dashboard, click **New + → Web Service**
+
 2. Connect your GitHub repository
-3. Fill in configuration:
-    - **Name**: `sweet-shop-api`
-    - **Runtime**: Java
-    - **Build Command**: `cd backend && mvn clean install -q`
-    - **Start Command**: `cd backend && mvn spring-boot:run`
-    - **Region**: Same as database
-    - **Plan**: Free tier available
 
-4. Add Environment Variables:
+3. Configure the service:
+
+   * **Name**: `sweet-shop-api`
+   * **Runtime**: Java
+   * **Build Command**: `cd backend && mvn clean install -q`
+   * **Start Command**: `cd backend && mvn spring-boot:run`
+   * **Region**: Same as database
+   * **Plan**: Free tier
+
+4. Add the following **Environment Variables**:
+
 ```
-   DATABASE_URL=<your-postgres-internal-url>
-   JWT_SECRET=<generate-a-secure-random-string>
-   JAVA_TOOL_OPTIONS=-Dspring.profiles.active=prod
+DATABASE_URL=<your-postgres-internal-url>
+JWT_SECRET=<secure-random-string>
+JAVA_TOOL_OPTIONS=-Dspring.profiles.active=prod
+```
 
-Click "Create Web Service"
-Wait for deployment (5-10 minutes)
-Note down the service URL (e.g., https://sweet-shop-api.onrender.com)
+5. Click **Create Web Service**
+6. Wait for deployment (5–10 minutes)
+7. Note the backend service URL (example: [https://sweet-shop-api.onrender.com](https://sweet-shop-api.onrender.com))
 
-Step 3: Verify Backend
-bash# Test the API
+---
+
+### Step 3: Verify Backend Deployment
+
+Test the backend API:
+
+```bash
 curl https://sweet-shop-api.onrender.com/api/sweets
-
-# Should return empty array: []
 ```
+
+Expected response:
+
+```
+[]
+```
+
+---
 
 ## Frontend Deployment on Netlify
 
-### Step 1: Deploy to Netlify
+### Step 1: Deploy the Frontend
 
-1. Go to [Netlify Dashboard](https://netlify.com)
-2. Click "Add new site" → "Import an existing project"
-3. Select GitHub and authorize
-4. Select your repository
-5. Fill in configuration:
-    - **Base directory**: `frontend`
-    - **Build command**: `npm run build`
-    - **Publish directory**: `frontend/dist`
+1. Open the **Netlify Dashboard**
 
-6. Add Environment Variables:
+2. Click **Add new site → Import an existing project**
+
+3. Select **GitHub** and authorize access
+
+4. Choose your repository
+
+5. Configure build settings:
+
+   * **Base directory**: `frontend`
+   * **Build command**: `npm run build`
+   * **Publish directory**: `frontend/dist`
+
+6. Add the following **Environment Variable**:
+
 ```
-   VITE_API_URL=<your-render-backend-url>/api
+VITE_API_URL=<your-render-backend-url>/api
+```
 
-Click "Deploy site"
-Wait for deployment (2-3 minutes)
-Your site will be available at https://<random>.netlify.app
+7. Click **Deploy site**
+8. Wait for deployment (2–3 minutes)
+9. Access the site at: `https://<random>.netlify.app`
 
-Step 2: Configure Custom Domain (Optional)
+---
 
-In Netlify site settings, go to "Domain management"
-Add your custom domain
-Follow DNS configuration instructions
+### Step 2: Configure a Custom Domain (Optional)
 
-Post-Deployment
-1. Create Admin User
-Since you can't access the database directly, create an admin user and update via database UI:
-sql-- Connect to your PostgreSQL database
+1. Open **Site settings → Domain management**
+2. Add your custom domain
+3. Follow the DNS configuration instructions provided by Netlify
+
+---
+
+## Post-Deployment Tasks
+
+### Step 1: Create an Admin User
+
+If direct DB access is required, update the user role via SQL:
+
+```sql
 UPDATE users SET role = 'ADMIN' WHERE username = 'your_username';
-2. Test Endpoints
-bash# Register
+```
+
+---
+
+### Step 2: Test API Endpoints
+
+**Register User**
+
+```bash
 curl -X POST https://sweet-shop-api.onrender.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -97,142 +141,186 @@ curl -X POST https://sweet-shop-api.onrender.com/api/auth/register \
     "email": "test@example.com",
     "password": "securepass123"
   }'
+```
 
-# Login
+**Login User**
+
+```bash
 curl -X POST https://sweet-shop-api.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "username": "testuser",
     "password": "securepass123"
   }'
+```
 
-# Get sweets
+**Fetch Sweets**
+
+```bash
 curl https://sweet-shop-api.onrender.com/api/sweets
 ```
 
-### 3. Monitor Logs
+---
 
-**Render Backend Logs:**
-- Go to service → "Logs" tab
-- Real-time log streaming
+## Monitoring and Logs
 
-**Netlify Frontend Logs:**
-- Go to site → "Deploys"
-- Click on a deploy for logs
-- Check browser console for client errors
+### Backend Logs (Render)
+
+* Open the service dashboard
+* Navigate to the **Logs** tab
+* View real-time log output
+
+### Frontend Logs (Netlify)
+
+* Open **Deploys** section
+* Select a deployment to view logs
+* Check browser console for client-side errors
+
+---
 
 ## Continuous Deployment
 
-Both Render and Netlify support automatic deployments:
+Both platforms support automatic deployments:
 
-- **Render**: Automatically redeploys on push to main branch
-- **Netlify**: Automatically redeploys on push to main branch
+* **Render**: Redeploys automatically on push to the `main` branch
+* **Netlify**: Redeploys automatically on push to the `main` branch
 
-## Environment-Specific Configurations
+---
 
-### Development
+## Environment Configuration
+
+### Development Environment
+
 ```
-Backend: http://localhost:8080/api
+Backend:  http://localhost:8080/api
 Frontend: http://localhost:5173
 ```
 
-### Production
+### Production Environment
+
 ```
-Backend: https://sweet-shop-api.onrender.com/api
+Backend:  https://sweet-shop-api.onrender.com/api
 Frontend: https://sweet-shop-frontend.netlify.app
 ```
 
+---
+
 ## Troubleshooting
 
-### Backend Won't Deploy
-1. Check GitHub Actions logs
-2. Verify Java version (must be 17+)
-3. Check pom.xml dependencies
-4. Ensure DATABASE_URL is correct
+### Backend Deployment Issues
 
-### Frontend Build Fails
+1. Check Render logs
+2. Verify Java version (17+ required)
+3. Validate `pom.xml` dependencies
+4. Confirm `DATABASE_URL` configuration
+
+### Frontend Build Failures
+
 1. Clear Netlify cache and redeploy
-2. Check Node.js version (must be 18+)
-3. Verify VITE_API_URL is set correctly
-4. Check package.json dependencies
+2. Verify Node.js version (18+ required)
+3. Confirm `VITE_API_URL` value
+4. Check `package.json` dependencies
 
-### API Calls Failing
-1. Check CORS configuration in SecurityConfig
-2. Verify JWT_SECRET is set
-3. Check frontend VITE_API_URL matches backend
-4. Look at browser console for CORS errors
+### API Communication Errors
 
-### Database Connection Issues
-1. Verify DATABASE_URL format
-2. Check database credentials
-3. Ensure database is running
-4. Test connection string locally first
+1. Validate CORS configuration
+2. Ensure `JWT_SECRET` is set
+3. Match frontend API URL with backend
+4. Inspect browser console errors
+
+### Database Connection Problems
+
+1. Verify database URL format
+2. Check credentials
+3. Confirm database service is running
+4. Test the connection locally
+
+---
 
 ## Scaling Recommendations
 
 ### Horizontal Scaling
-- Render: Upgrade plan to add replicas
-- Netlify: Auto-scales based on load
+
+* Render: Increase replicas via paid plans
+* Netlify: Automatic scaling by default
 
 ### Vertical Scaling
-- Database: Upgrade PostgreSQL plan for more RAM/storage
-- Backend: Upgrade Java memory allocation
+
+* Upgrade PostgreSQL resources
+* Increase backend memory allocation
 
 ### Caching
-- Add Redis for session caching
-- Implement CDN for static frontend assets
+
+* Introduce Redis for caching
+* Use CDN for static frontend assets
+
+---
 
 ## Security Checklist
 
-- [ ] JWT_SECRET is long and random (32+ characters)
-- [ ] Database password is strong
-- [ ] No sensitive data in logs
-- [ ] HTTPS enabled (automatic on both platforms)
-- [ ] CORS properly configured
-- [ ] Authentication required for protected endpoints
-- [ ] Admin role properly restricted
-- [ ] Input validation on all endpoints
-- [ ] No debug mode in production
+* [ ] Strong JWT secret (32+ characters)
+* [ ] Secure database credentials
+* [ ] No sensitive data in logs
+* [ ] HTTPS enabled
+* [ ] Proper CORS configuration
+* [ ] Authentication for protected routes
+* [ ] Restricted admin access
+* [ ] Input validation enabled
+* [ ] Debug mode disabled in production
+
+---
 
 ## Backup Strategy
 
 ### Database Backups
-- Render provides daily automated backups (paid plans)
-- Manual export: Use pgAdmin or pg_dump
+
+* Automated backups via Render (paid plans)
+* Manual backups using `pg_dump` or pgAdmin
 
 ### Code Backups
-- GitHub serves as primary backup
-- Tag releases for version history
+
+* GitHub as primary repository
+* Release tagging for version history
+
+---
 
 ## Performance Optimization
 
 ### Backend
-- Enable query caching in JPA
-- Use database indexes on frequently queried fields
-- Monitor slow queries in logs
+
+* Enable JPA query caching
+* Add database indexes
+* Monitor slow queries
 
 ### Frontend
-- Lazy load React components
-- Optimize images and assets
-- Use CDN for static files
+
+* Lazy load components
+* Optimize images and assets
+* Serve static files via CDN
+
+---
 
 ## Cost Estimation
 
-### Free Tier (Recommended for Learning)
-- Render Web Service: Free tier
-- Render PostgreSQL: Free tier (limited)
-- Netlify: Free tier with generous limits
-- **Total Monthly Cost**: $0 USD
+### Free Tier (Learning Setup)
+
+* Render Web Service: Free
+* Render PostgreSQL: Free (limited)
+* Netlify: Free tier
+* **Total Cost**: $0/month
 
 ### Production Tier
-- Render Web Service: $12.50/month
-- Render PostgreSQL: $15/month
-- Netlify Pro: $19/month
-- **Total Monthly Cost**: ~$46.50 USD
 
-## Support & Resources
+* Render Web Service: $12.50/month
+* Render PostgreSQL: $15/month
+* Netlify Pro: $19/month
+* **Total Cost**: ~$46.50/month
 
-- Render Documentation: https://render.com/docs
-- Netlify Documentation: https://docs.netlify.com
-- Spring Boot: https://spring.io/projects/spring-boot
-- React: https://react.dev
+---
+
+## Support and Resources
+
+* Render Docs: [https://render.com/docs](https://render.com/docs)
+* Netlify Docs: [https://docs.netlify.com](https://docs.netlify.com)
+* Spring Boot: [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)
+* React: [https://react.dev](https://react.dev)
