@@ -26,7 +26,7 @@ public class SweetShopApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "http://localhost:5173")
+                        .allowedOrigins("http://localhost:3000", "http://localhost:5173", "https://693e8f2555604af128215f6c--mithai-shop.netlify.app/")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
